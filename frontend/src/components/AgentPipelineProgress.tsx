@@ -40,7 +40,7 @@ export const AgentPipelineProgress: React.FC<AgentPipelineProgressProps> = ({
       }
     >
       <div className="grid grid-cols-1 md:grid-cols-7 gap-2 mb-6">
-        {steps.map((s, i) => {
+        {steps.map((s) => {
           const stepEvent = events.find((e) => e.step === s.id);
           const isDone = stepEvent?.status === 'completed';
           const isRunning = stepEvent?.status === 'executing';

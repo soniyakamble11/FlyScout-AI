@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from './Modal';
 import { ResearchBrief } from '../types';
-import { Sparkles, DollarSign, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Sparkles, DollarSign, TrendingUp } from 'lucide-react';
 
 interface ResearchBriefModalProps {
   isOpen: boolean;

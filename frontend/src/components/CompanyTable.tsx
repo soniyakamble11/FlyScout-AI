@@ -3,7 +3,7 @@ import { Table } from './Table';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Company } from '../types';
-import { Search, Mail, UserCheck } from 'lucide-react';
+import { Search, UserCheck } from 'lucide-react';
 
 interface CompanyTableProps {
   companies: Company[];

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { API_BASE_URL, DEFAULT_REQUEST_TIMEOUT } from '../config/constants';
-import { Campaign, Company, PipelineProgressEvent } from '../types';
+import { Campaign, PipelineProgressEvent } from '../types';
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

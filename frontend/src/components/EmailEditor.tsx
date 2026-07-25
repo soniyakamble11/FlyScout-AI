@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { EmailStep } from '../types';
 import { Card } from './Card';
 import { Button } from './Button';
-import { Send, Edit3, Check } from 'lucide-react';
+import { Edit3, Check } from 'lucide-react';
 
 interface EmailEditorProps {
   steps: EmailStep[];
