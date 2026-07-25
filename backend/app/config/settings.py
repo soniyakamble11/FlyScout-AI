@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     BACKEND_URL: str = Field(default="http://localhost:8000", description="Backend server base URL")
     FRONTEND_URL: str = Field(default="http://localhost:5173", description="Frontend application base URL")
     ALLOWED_ORIGINS: List[str] = Field(
-        default=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
+        default=["http://localhost:5173", "https://fly-scout-ai-omega.vercel.app"],
         description="Allowed CORS origins"
     )
 
