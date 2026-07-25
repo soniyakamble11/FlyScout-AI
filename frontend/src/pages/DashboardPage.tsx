@@ -7,6 +7,7 @@ import { Loader } from '../components/Loader';
 import { Company } from '../types';
 import { campaignApi, pipelineApi } from '../services/api';
 import { API_BASE_URL } from '../config/constants';
+import { Building2, Users, Mail, BarChart3, Sparkles, AlertCircle } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
   const [events, setEvents] = useState<any[]>([]);
@@ -66,7 +67,6 @@ export const DashboardPage: React.FC = () => {
 
           // Harvest final result from the email_generation step data_snippet
           if (event.step === 'email_generation' && event.status === 'completed') {
-
             console.log("========== FINAL EVENT ==========");
             console.log(event);
 
@@ -87,9 +87,7 @@ export const DashboardPage: React.FC = () => {
             console.log(companies);
 
             setPipelineResults(companies);
-
             setIsExecuting(false);
-
             es.close();
           }
         } catch (err) {
@@ -109,27 +107,116 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
+  // Calculate statistics metrics
+  const companiesCount = pipelineResults?.length || 0;
+  const contactsCount = pipelineResults?.reduce((acc, c) => acc + (c.contacts?.length || 0), 0) || 0;
+  const emailsCount = pipelineResults?.reduce((acc, c) => acc + (c.emails?.length || 0), 0) || 0;
+  
+  const completedEventsCount = events.filter((e) => e.status === 'completed').length;
+  const progressPct = isExecuting
+    ? Math.min(Math.round((completedEventsCount / 7) * 100), 95)
+    : hasRun && !pipelineError
+    ? 100
+    : 0;
+
   return (
     <div className="space-y-8 pb-12">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-100">FlyScout AI — Outbound BDR Control Center</h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Autonomous multi-agent platform: ICP targeting → Company discovery → Contact discovery → Research → Personalization → Email generation.
-        </p>
+      {/* Hero Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-mono mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Multi-Agent Prospecting Mesh
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-100 tracking-tight font-heading">
+            FlyScout AI — Outbound BDR Control Center
+          </h1>
+          <p className="text-xs md:text-sm text-slate-400 mt-1 max-w-3xl leading-relaxed">
+            Autonomous multi-agent platform for signal-based B2B outreach: ICP targeting → Company discovery → Contact discovery → Deep research → Personalization → Email generation.
+          </p>
+        </div>
       </div>
 
-      {/* Step 1: Campaign Brief */}
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Stat 1: Companies */}
+        <div className="glass-card p-5 rounded-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Companies Discovered</span>
+            <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <Building2 className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-slate-100 font-heading">{companiesCount}</span>
+            <span className="text-xs text-slate-500">enterprise accounts</span>
+          </div>
+        </div>
+
+        {/* Stat 2: Contacts */}
+        <div className="glass-card p-5 rounded-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Contacts Identified</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-slate-100 font-heading">{contactsCount}</span>
+            <span className="text-xs text-slate-500">decision makers</span>
+          </div>
+        </div>
+
+        {/* Stat 3: Emails */}
+        <div className="glass-card p-5 rounded-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Emails Generated</span>
+            <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+              <Mail className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-slate-100 font-heading">{emailsCount}</span>
+            <span className="text-xs text-slate-500">personalized sequences</span>
+          </div>
+        </div>
+
+        {/* Stat 4: Progress */}
+        <div className="glass-card p-5 rounded-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pipeline Progress</span>
+            <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+              <BarChart3 className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-slate-100 font-heading">{progressPct}%</span>
+            <span className="text-xs text-slate-500">{isExecuting ? 'running...' : hasRun ? 'complete' : 'standby'}</span>
+          </div>
+          <div className="mt-2.5 w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 h-1.5 rounded-full transition-all duration-500"
+              style={{ width: `${progressPct}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Step 1: Campaign Brief Form */}
       <ICPForm onSubmitCampaign={handleLaunchCampaign} isLoading={isExecuting} />
 
-      {/* Step 2: Agent Execution Timeline */}
+      {/* Step 2: Agent Execution Timeline & Telemetry */}
       {hasRun && (
         <AgentPipelineProgress events={events} isExecuting={isExecuting} />
       )}
 
-      {/* Error state */}
+      {/* Error State */}
       {pipelineError && (
-        <div className="p-4 rounded-xl border border-rose-800/60 bg-rose-950/30 text-rose-300 text-sm">
-          <span className="font-semibold">Pipeline Error: </span>{pipelineError}
+        <div className="p-4 rounded-2xl border border-rose-800/60 bg-rose-950/30 text-rose-300 text-sm flex items-start gap-3 shadow-lg">
+          <AlertCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <span className="font-semibold text-rose-200">Pipeline Error: </span>
+            <span>{pipelineError}</span>
+          </div>
         </div>
       )}
 
@@ -151,11 +238,16 @@ export const DashboardPage: React.FC = () => {
         />
       )}
 
-      {/* Pre-run state — show demo hint */}
+      {/* Pre-run State Hint */}
       {!hasRun && (
-        <div className="p-5 rounded-xl border border-slate-800 bg-slate-900/40 text-center text-xs text-slate-400">
-          Fill in your Campaign Brief above and click <span className="text-indigo-400 font-semibold">Launch AI Pipeline</span> to begin.
-          The 7-agent mesh will discover real target accounts, find contacts, research signals, and generate personalized emails.
+        <div className="p-6 rounded-2xl border border-slate-800/80 bg-slate-950/40 text-center text-xs text-slate-400 space-y-2 backdrop-blur-md">
+          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mx-auto">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <p className="text-slate-300 font-semibold text-sm">Ready to launch outbound campaign</p>
+          <p className="max-w-lg mx-auto leading-relaxed">
+            Fill in your Campaign Brief above and click <span className="text-indigo-400 font-semibold">Launch AI Prospecting Pipeline</span> to begin. The 7-agent mesh will discover target accounts, find decision makers, research signals, and generate personalized emails.
+          </p>
         </div>
       )}
     </div>

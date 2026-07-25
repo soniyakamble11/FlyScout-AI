@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from './Card';
 import { Input } from './Input';
 import { Button } from './Button';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Trophy, Cpu, Target, ArrowRight } from 'lucide-react';
 
 interface ICPFormProps {
   onSubmitCampaign?: (data: any) => void;
@@ -15,26 +15,19 @@ export const ICPForm: React.FC<ICPFormProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     name: 'FlytBase Mining Outreach Campaign',
-
     product_name: 'FlytBase Autonomous Drone Platform',
-
     value_proposition:
       'FlytBase enables autonomous drone operations for industrial inspections across large-scale mining environments. The platform improves worker safety, automates inspection workflows, reduces operational downtime, and enables autonomous BVLOS drone operations for industrial enterprises.',
-
     industries:
       'Mining, Lithium Mining, Copper Mining, Iron Ore Mining, Metals & Minerals',
-
     employee_count_min: 1000,
-
     employee_count_max: 100000,
-
     target_roles:
       'Head of Operations, VP HSE, Mine Manager, Site Director',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (onSubmitCampaign) {
       onSubmitCampaign(formData);
     }
@@ -42,32 +35,53 @@ export const ICPForm: React.FC<ICPFormProps> = ({
 
   return (
     <Card
-      title="Campaign Brief"
-      subtitle="Configure the outbound campaign for discovering enterprise mining companies and generating personalized outreach."
+      title={
+        <div className="flex items-center gap-2">
+          <Target className="w-5 h-5 text-indigo-400" />
+          <span className="text-lg font-bold text-slate-100">Campaign Brief & ICP Configuration</span>
+        </div>
+      }
+      subtitle="Configure outbound campaign details to discover enterprise accounts, discover contacts, and generate signal-personalized emails."
     >
       {/* Hackathon Banner */}
-      <div className="mb-6 rounded-xl border border-indigo-700/40 bg-indigo-950/20 p-4">
-        <h2 className="text-indigo-300 font-semibold text-lg">
-          🏆 FlytBase Outbound BDR Hiring Hackathon
-        </h2>
-
-        <p className="mt-2 text-sm text-slate-300 leading-6">
-          This AI platform automatically:
-        </p>
-
-        <ul className="mt-3 text-sm text-slate-300 space-y-2 list-disc list-inside">
-          <li>Identifies similar enterprise mining companies</li>
-          <li>Finds relevant decision makers</li>
-          <li>Researches companies using live public information</li>
-          <li>Generates highly personalized outbound emails</li>
-          <li>Provides explainable AI reasoning with source attribution</li>
-        </ul>
+      <div className="mb-6 rounded-2xl border border-indigo-500/30 bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-slate-950/60 p-5 shadow-lg backdrop-blur-md relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+            <Trophy className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-slate-100 font-bold text-base flex items-center gap-2">
+              FlytBase Outbound BDR Hiring Hackathon
+            </h2>
+            <p className="mt-1 text-xs text-slate-300 leading-relaxed">
+              This autonomous multi-agent platform automatically:
+            </p>
+            <ul className="mt-2.5 grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-300">
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                Identifies matching enterprise mining companies
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                Finds target decision-maker contacts
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                Researches live public signals via Tavily
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                Generates signal-grounded personalized emails
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-
+      <form onSubmit={handleSubmit} className="space-y-5">
         <Input
-          label="Campaign Name (Example Campaign)"
+          label="Campaign Name"
           value={formData.name}
           onChange={(e) =>
             setFormData({
@@ -78,9 +92,8 @@ export const ICPForm: React.FC<ICPFormProps> = ({
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
           <Input
-            label="FlytBase Solution"
+            label="Product / Solution Name"
             value={formData.product_name}
             onChange={(e) =>
               setFormData({
@@ -100,18 +113,15 @@ export const ICPForm: React.FC<ICPFormProps> = ({
               })
             }
           />
-
         </div>
 
         <div>
-
           <label className="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
-            FlytBase Value Proposition
+            Value Proposition & Key Signals
           </label>
-
           <textarea
-            rows={5}
-            className="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            rows={4}
+            className="w-full bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/80 transition-all shadow-inner leading-relaxed"
             value={formData.value_proposition}
             onChange={(e) =>
               setFormData({
@@ -120,13 +130,11 @@ export const ICPForm: React.FC<ICPFormProps> = ({
               })
             }
           />
-
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
           <Input
-            label="Target Vertical"
+            label="Target Industries"
             value={formData.industries}
             onChange={(e) =>
               setFormData({
@@ -159,71 +167,45 @@ export const ICPForm: React.FC<ICPFormProps> = ({
               })
             }
           />
-
         </div>
 
-        {/* Workflow Summary */}
-
-        <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
-
-          <h3 className="text-sm font-semibold text-slate-200 mb-3">
-            AI Pipeline
-          </h3>
-
-          <div className="flex flex-wrap gap-2 text-xs">
-
-            <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300">
-              Planner
-            </span>
-
-            <span>→</span>
-
-            <span className="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300">
-              ICP Matching
-            </span>
-
-            <span>→</span>
-
-            <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300">
-              Company Discovery
-            </span>
-
-            <span>→</span>
-
-            <span className="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
-              Contact Discovery
-            </span>
-
-            <span>→</span>
-
-            <span className="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300">
-              Research
-            </span>
-
-            <span>→</span>
-
-            <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-300">
-              Personalization
-            </span>
-
-            <span>→</span>
-
-            <span className="px-3 py-1 rounded-full bg-violet-500/20 text-violet-300">
-              Email Generation
-            </span>
-
+        {/* Workflow Steps Preview */}
+        <div className="rounded-2xl border border-slate-800/80 bg-slate-950/50 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-indigo-400" /> Autonomous 7-Agent Sequence
+            </h3>
+            <span className="text-[10px] text-slate-500 font-mono">Sequential Orchestration</span>
           </div>
 
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium">
+            <span className="px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">1. Planner</span>
+            <ArrowRight className="w-3 h-3 text-slate-600" />
+            <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">2. ICP Match</span>
+            <ArrowRight className="w-3 h-3 text-slate-600" />
+            <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">3. Companies</span>
+            <ArrowRight className="w-3 h-3 text-slate-600" />
+            <span className="px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300">4. Contacts</span>
+            <ArrowRight className="w-3 h-3 text-slate-600" />
+            <span className="px-2.5 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300">5. Research</span>
+            <ArrowRight className="w-3 h-3 text-slate-600" />
+            <span className="px-2.5 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-300">6. Hooks</span>
+            <ArrowRight className="w-3 h-3 text-slate-600" />
+            <span className="px-2.5 py-1 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-300">7. Emails</span>
+          </div>
         </div>
 
-        <Button
-          type="submit"
-          isLoading={isLoading}
-          leftIcon={<Sparkles className="w-4 h-4" />}
-        >
-          Launch AI Prospecting Pipeline
-        </Button>
-
+        <div className="pt-2 flex justify-end">
+          <Button
+            type="submit"
+            size="lg"
+            isLoading={isLoading}
+            leftIcon={<Sparkles className="w-4 h-4" />}
+            className="w-full md:w-auto"
+          >
+            Launch AI Prospecting Pipeline
+          </Button>
+        </div>
       </form>
     </Card>
   );

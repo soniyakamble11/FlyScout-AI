@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FlyScout AI – Multi‑Agent Outbound BDR Platform Mind Map</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --node: #1e293b;
+            --nodeHover: #334155;
+            --text: #cbd5e1;
+            --accent: #7dd3fc;
+            --line: #475569;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            font-family: system-ui, sans-serif;
+            overflow: hidden;
+            color: var(--text);
+        }
+
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .node {
+            position: absolute;
+            padding: 0.8rem 1rem;
+            background: var(--node);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            text-align: center;
+            max-width: 12rem;
+            user-select: none;
+        }
+
+        .node:hover {
+            background: var(--nodeHover);
+            transform: scale(1.05);
+        }
+
+        .node .title {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .node .list {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .line {
+            stroke: var(--line);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        /* Center node */
+        #center {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- SVG for connecting lines -->
+        <svg id="links"></svg>
+
+        <!-- Central node -->
+        <div id="center" class="node">
+            <div class="title">FlyScout AI<br>Multi‑Agent Outbound BDR Platform</div>
+        </div>
+
+        <!-- Branch nodes (initially hidden, shown on click) -->
+        <div id="branch1" class="node" style="left:20%;top:10%;">
+            <div class="title">Campaign Input</div>
+            <div class="list">
+                • Product<br>
+                • Value Proposition<br>
+                • Target ICP
+            </div>
+        </div>
+        <div id="branch2" class="node" style="left:80%;top:10%;">
+            <div class="title">Planner Agent</div>
+            <div class="list">
+                • Validate Input<br>
+                • Initialize Pipeline<br>
+                • Execution Plan
+            </div>
+        </div>
+        <div id="branch3" class="node" style="left:90%;top:40%;">
+            <div class="title">ICP Matching</div>
+            <div class="list">
+                • Industry<br>
+                • Company Size<br>
+                • Target Roles
+            </div>
+        </div>
+        <div id="branch4" class="node" style="left:80%;bottom:10%;">
+            <div class="title">Company Discovery</div>
+            <div class="list">
+                • Tavily Search<br>
+                • Gemini Extraction<br>
+                • ICP Ranking
+            </div>
+        </div>
+        <div id="branch5" class="node" style="left:20%;bottom:10%;">
+            <div class="title">Contact Discovery</div>
+            <div class="list">
+                • Decision Makers<br>
+                • Contact Information
+            </div>
+        </div>
+        <div id="branch6" class="node" style="left:10%;top:40%;">
+            <div class="title">Deep Research</div>
+            <div class="list">
+                • Company Summary<br>
+                • Hiring Signals<br>
+                • Technology Signals<br>
+                • Expansion Signals
+            </div>
+        </div>
+        <div id="branch7" class="node" style="left:30%;top:30%;">
+            <div class="title">Personalization</div>
+            <div class="list">
+                • Outreach Hooks<br>
+                • Buying Signals
+            </div>
+        </div>
+        <div id="branch8" class="node" style="right:30%;top:30%;">
+            <div class="title">Email Generation</div>
+            <div class="list">
+                • Personalized Subject<br>
+                • Email Body<br>
+                • CTA
+            </div>
+        </div>
+        <div id="branch9" class="node" style="right:20%;top:55%;">
+            <div class="title">Live Telemetry</div>
+            <div class="list">
+                • Server‑Sent Events<br>
+                • Progress Updates<br>
+                • Agent Status
+            </div>
+        </div>
+        <div id="branch10" class="node" style="left:50%;bottom:5%;">
+            <div class="title">Frontend Dashboard</div>
+            <div class="list">
+                • Company Cards<br>
+                • Research Briefs<br>
+                • Email Sequences<br>
+                • Live Progress
+            </div>
+        </div>
+        <div id="branch11" class="node" style="left:5%;top:75%;">
+            <div class="title">Backend</div>
+            <div class="list">
+                • FastAPI<br>
+                • Multi‑Agent Pipeline<br>
+                • REST APIs<br>
+                • SSE
+            </div>
+        </div>
+        <div id="branch12" class="node" style="right:5%;top:75%;">
+            <div class="title">External Services</div>
+            <div class="list">
+                • Gemini<br>
+                • Tavily
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ---------- Interactive behavior ---------- */
+        const center = document.getElementById('center');
+        const branches = document.querySelectorAll('[id^=branch]');
+        let expanded = false;
+
+        // toggle all branches on central click
+        center.addEventListener('click', () => {
+            expanded = !expanded;
+            branches.forEach(b => b.style.opacity = expanded ? '1' : '0');
+            drawLines();
+        });
+
+        /* Initially hide branches */
+        branches.forEach(b => b.style.opacity = '0');
+
+        /* ---------- Drawing SVG lines ---------- */
+        function drawLines() {
+            const svg = document.getElementById('links');
+            svg.innerHTML = ''; // clear
+            if (!expanded) return;
+
+            // helper to create a line from A to B
+            const createLine = (fromEl, toEl) => {
+                const rectA = fromEl.getBoundingClientRect();
+                const rectB = toEl.getBoundingClientRect();
+
+                const startX = rectA.left + rectA.width / 2 + window.scrollX;
+                const startY = rectA.top + rectA.height / 2 + window.scrollY;
+                const endX = rectB.left + rectB.width / 2 + window.scrollX;
+                const endY = rectB.top + rectB.height / 2 + window.scrollY;
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', startX);
+                line.setAttribute('y1', startY);
+                line.setAttribute('x2', endX);
+                line.setAttribute('y2', endY);
+                line.setAttribute('class', 'line');
+                // simple animation
+                line.style.transition = 'stroke-dashoffset 0.4s ease';
+                line.style.strokeDasharray = Math.hypot(endX - startX, endY - startY);
+                line.style.strokeDashoffset = Math.hypot(endX - startX, endY - startY);
+                requestAnimationFrame(() => { line.style.strokeDashoffset = 0; });
+                svg.appendChild(line);
+            };
+
+            // Define the logical connections as per the required flow
+            const connections = [
+                [center, 'branch1'],
+                [center, 'branch2'],
+                [center, 'branch3'],
+                [center, 'branch4'],
+                [center, 'branch5'],
+                [center, 'branch6'],
+                [center, 'branch7'],
+                [center, 'branch8'],
+                [center, 'branch9'],
+                [center, 'branch10'],
+                [center, 'branch11'],
+                [center, 'branch12']
+            ];
+            connections.forEach(([a, b]) => createLine(a, document.getElementById(b)));
+        }
+
+        /* Redraw on resize/orientation change */
+        window.addEventListener('resize', drawLines);
+        window.addEventListener('orientationchange', drawLines);
+    </script>
+</body>
+
+</html>
